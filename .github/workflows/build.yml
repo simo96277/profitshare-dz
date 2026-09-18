@@ -17,7 +17,11 @@ jobs:
           flutter-version: '3.29.3'
           channel: stable
 
-      - name: Extract project
+      - name: Create Android Flutter project
+        run: |
+          flutter create --project-name profitshare_dz app
+
+      - name: Copy ProfitShare DZ code
         run: |
           unzip -o ProfitShare_DZ_MVP.zip -d app
 
