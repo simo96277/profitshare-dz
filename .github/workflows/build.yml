@@ -1,0 +1,38 @@
+name: Build ProfitShare DZ APK
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Extract project
+        run: |
+          unzip -o ProfitShare_DZ_MVP.zip -d app
+          cd app
+          flutter create . --project-name profitshare_dz --platforms android
+
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: '3.29.3'
+          channel: stable
+
+      - name: Get dependencies
+        working-directory: app
+        run: flutter pub get
+
+      - name: Build APK
+        working-directory: app
+        run: flutter build apk --release
+
+      - name: Upload APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: ProfitShare-DZ-APK
+          path: app/build/app/outputs/flutter-apk/release/app-release.apk
